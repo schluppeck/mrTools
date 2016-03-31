@@ -2276,7 +2276,7 @@ switch lower(param)
     % view = viewSet(view,'figure',handle);
     view.figure = val;
 
-  case {'curslice'}
+  case {'curslice', 'currentslice','basecurslice','baseslice'}
     % view = viewSet(view,'curSlice',sliceNum);
     baseDims = viewGet(view,'baseDims');
     sliceIndex = viewGet(view,'basesliceindex');
@@ -2288,7 +2288,6 @@ switch lower(param)
     if (val > 0) && (val <= nSlices)
       curSlice = viewGet(view,'curSlice');
       if isempty(curSlice) || curSlice ~= val
-	view.curslice.sliceNum = val;
 	mlrGuiSet(view,'slice',val);
 	% set in base
 	curBase = viewGet(view,'curBase');
