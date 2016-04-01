@@ -114,7 +114,6 @@ if ~isempty(mrLastView) && isfile(sprintf('%s.mat',stripext(mrLastView)))
     if baseLoaded
       % slice orientation from last run
       view = viewSet(view,'curBase',mrLastView.curBase);
-      view = viewSet(view,'sliceOrientation',mrLastView.sliceOrientation);
       % change scan
       view = viewSet(view,'curScan',mrLastView.curScan);
       % change slice/corticalDepth
