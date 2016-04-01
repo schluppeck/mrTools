@@ -22,7 +22,7 @@ if (nargout == 2)
   % Add optional fields and return true if the view with optional fields is
   % valid.
   requiredFields = {'viewNum','viewType','baseVolumes','curBase','curGroup',...
-		    'analyses','curAnalysis','ROIs','curROI','prevROIcoords','showROIs','figure','curslice','curScan','sliceOrientation'};
+		    'analyses','curAnalysis','ROIs','curROI','prevROIcoords','showROIs','figure','curslice','curScan',};
   optionalFields = {'loadedAnalyses',{};
 		    'groupScanNum',[];
 		    'labelROIs',0;
@@ -32,7 +32,7 @@ else
   % Return 0 if the overlay structure is missing any fields required or
   % optional (since w/out changing the analysis structure it is invalid).
   requiredFields = {'viewNum','viewType','baseVolumes','curBase','curGroup',...
-		    'analyses','curAnalysis','ROIs','curROI','prevROIcoords','showROIs','figure','curslice','loadedAnalyses','groupScanNum','labelROIs','curScan','sliceOrientation','roiGroup'};
+		    'analyses','curAnalysis','ROIs','curROI','prevROIcoords','showROIs','figure','curslice','loadedAnalyses','groupScanNum','labelROIs','curScan','roiGroup'};
   optionalFields = {};
 end
 
@@ -64,6 +64,24 @@ for f = 1:size(optionalFields,1)
     view.(fieldName) = default;
   end
 end
+
+% remove any fields that are not required or optional
+if nargout == 2
+  viewFieldNames = fieldnames(view);
+  for f = 1:length(viewFieldNames)
+    % check required fields
+    if ~any(strcmp(viewFieldNames{f},requiredFields))
+      % check optional fields, (only check first column of
+      % field names, not the default values...
+      match = strcmp(viewFieldNames{f},optionalFields);
+      if ~any(match(:,1))
+	disp(sprintf('(isview) Removing unnecessary field %s from view',viewFieldNames{f}));
+	view = rmfield(view,viewFieldNames{f});
+      end
+    end
+  end
+end
+
 view = orderfields(view);
 
 % Check that viewNum is a number
